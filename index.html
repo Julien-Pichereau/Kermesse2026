@@ -225,6 +225,20 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
         <div style="font-size:13px;font-weight:600;color:var(--sky-d);line-height:1.5">Le spectacle de 18h à 20h est géré par l'équipe enseignante. L'APEL gère la scène avant et après.</div>
       </div>
     </div>
+  
+
+  
+    <div id="p-notes" class="panel active">
+      <div class="sh">🧾 Notes et CR</div><div class="card" id="tn"></div>
+      <div class="sh">Ajouter une note</div>
+      <div class="form">
+        <input type="text" id="nt" placeholder="Taper le texte…">
+        <div class="row">
+          <textarea name="" id="nt"></textarea>
+        </div>
+        <button class="btn btn-sun" onclick="addNote()">+ Ajouter la note</button>
+      </div>
+    </div>
   </div>
 
   <nav class="nav">
@@ -281,7 +295,11 @@ const DEFAULT={
     {id:'bv7',name:'Nathalie C.',post:'Scène & technique'},
     {id:'bv8',name:'Franck V.',post:'Accueil entrée'},
     {id:'bv9',name:'Amira K.',post:'Jeux & animations'},
-  ]
+  ],
+  notes:[
+    {id:'t1',name:'CR 29 juin 2026'},
+    {id:'t2',name:'Suivi du 03/06/2026'},
+  ],
 };
 const TL=[
   {time:'16h30',label:'Installation finale',desc:'Stands, barnums, sono',cat:'Logistique',key:false},
@@ -370,6 +388,7 @@ function setupListeners(){
   hydrate(refs.budget,'budget',DEFAULT.budget);
   hydrate(refs.stocks,'stocks',DEFAULT.stocks);
   hydrate(refs.benevoles,'benevoles',DEFAULT.benevoles);
+  hydrate(refs.notes,'notes', DEFAULT.notes);
 }
 
 function arrToObj(arr){const o={};arr.forEach(x=>{if(x&&x.id)o[x.id]=x;});return o;}
@@ -377,7 +396,7 @@ function fbSet(k,id,d){useFirebase&&refs[k]?refs[k].child(id).set(d).catch(e=>co
 function fbUpdate(k,id,d){useFirebase&&refs[k]?refs[k].child(id).update(d).catch(e=>console.error(e)):saveLocal();}
 function fbRemove(k,id){useFirebase&&refs[k]?refs[k].child(id).remove().catch(e=>console.error(e)):saveLocal();}
 
-function renderAll(){renderTasks();renderBudget();renderStocks();renderBenevoles();renderTimeline();}
+function renderAll(){renderTasks();renderBudget();renderStocks();renderBenevoles();renderTimeline();renderNote;}
 
 function renderTasks(){
   const done=S.tasks.filter(t=>t.done).length,tot=S.tasks.length,pct=tot?Math.round(done/tot*100):0;
@@ -444,6 +463,16 @@ function delBenev(id){if(useFirebase){fbRemove('benevoles',id);}else{S.benevoles
 
 function renderTimeline(){
   document.getElementById('tl').innerHTML=TL.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
+}
+
+function renderNote(){
+  document.getElementById('note').innerHTML=NOTE.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
+}
+function addNote(){
+  const v=document.getElementById('note').value.trim();if(!v)return;
+  const id='note'+Date.now(),task={id,name:note,done:false};
+  if(useFirebase){fbSet('notes',id,note);}else{S.notes.push(note);saveLocal();}
+  document.getElementById('note').value='';
 }
 
 // Chargement dynamique du SDK Firebase
