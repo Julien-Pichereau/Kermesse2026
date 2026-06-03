@@ -471,7 +471,7 @@ function renderNote(){
 function addNote(){
   const v=document.getElementById('note').value.trim();if(!v)return;
   const id='note'+Date.now(),task={id,name:note,done:false};
-  if(useFirebase){fbSet('notes',id,note);}else{S.notes.push(note);saveLocal();}
+  if(useFirebase){fbSet('notes',id,note);}else{S.notes.push(note);saveLocal();renderNote();}
   document.getElementById('note').value='';
 }
 
