@@ -227,22 +227,6 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
     </div>
   </div>
 
-  <div id="p-notes" class="panel">
-      <div id="p-notes" class="panel active">
-      
-      <div class="sh">⚠️ Urgentes</div><div class="card" id="tu"></div>
-      <div class="sh">📋 À planifier</div><div class="card" id="tn"></div>
-      <div class="sh">Ajouter une tâche</div>
-      <div class="form">
-        <input type="text" id="nt" placeholder="Taper votre texte...">
-        <div class="row">
-          <div></div><select id="nt-cat"><option>Scène</option><option>Boissons</option><option>Nourriture</option><option>Matériel</option><option>Parents</option><option>Communication</option><option>Logistique</option></select>
-        </div>
-        <button class="btn btn-sun" onclick="addTask()">+ Ajouter la tâche</button>
-      </div>
-    </div>
-  </div>
-
   <nav class="nav">
     <button class="nb active" onclick="goTab('taches',this)"><span class="nb-ico">✅</span><span class="nb-lab">Tâches</span></button>
     <button class="nb" onclick="goTab('budget',this)"><span class="nb-ico">💰</span><span class="nb-lab">Budget</span></button>
@@ -444,19 +428,19 @@ function chgStock(id,d){
   if(useFirebase){fbUpdate('stocks',id,{qty:nq});}else{s.qty=nq;saveLocal();renderStocks();}
 }
 
-function renderPArents(){
+function renderBenevoles(){
   document.getElementById('posts-list').innerHTML=POSTS.map(p=>{
-    const list=S.parents.filter(p=>p.post===p);
+    const list=S.benevoles.filter(b=>b.post===p);
     return `<div class="post-card"><div class="post-hd"><span class="post-name">${p}</span><span class="post-cnt">${list.length} pers.</span></div><div class="bl">${list.length?list.map(b=>`<div class="bchip"><div class="bav">${b.name.slice(0,2).toUpperCase()}</div>${b.name}<button class="bdel" onclick="delBenev('${b.id}')">×</button></div>`).join(''):'<div class="bempty">Aucun bénévole affecté</div>'}</div></div>`;
   }).join('');
 }
-function addParent(){
-  const n=document.getElementById('pname').value.trim();if(!n)return;
-  const id='pt'+Date.now(),item={id,name:n,post:document.getElementById('ppost').value};
-  if(useFirebase){fbSet('parents',id,item);}else{S.parents.push(item);saveLocal();renderParents();}
-  document.getElementById('pname').value='';
+function addBenev(){
+  const n=document.getElementById('bname').value.trim();if(!n)return;
+  const id='bv'+Date.now(),item={id,name:n,post:document.getElementById('bpost').value};
+  if(useFirebase){fbSet('benevoles',id,item);}else{S.benevoles.push(item);saveLocal();renderBenevoles();}
+  document.getElementById('bname').value='';
 }
-function delParent(id){if(useFirebase){fpRemove('parents',id);}else{S.parents=S.parents.filter(p=>p.id!==id);saveLocal();renderParents();}}
+function delBenev(id){if(useFirebase){fbRemove('benevoles',id);}else{S.benevoles=S.benevoles.filter(b=>b.id!==id);saveLocal();renderBenevoles();}}
 
 function renderTimeline(){
   document.getElementById('tl').innerHTML=TL.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
