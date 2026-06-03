@@ -316,7 +316,7 @@ const CAT_BADGE={Logistique:'background:var(--pur-l);color:var(--pur-d)',APE:'ba
 const POSTS=['Stand boissons','Stand nourriture','Caisse & billetterie','Scène & technique','Accueil entrée','Jeux & animations','Logistique & rangement'];
 const LS_KEY='kermesse2026_local';
 
-let S={tasks:[],budget:[],stocks:[],benevoles:[]};
+let S={tasks:[],budget:[],stocks:[],benevoles:[], notes:[],};
 let db=null,refs={},useFirebase=false;
 
 function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify(S));}catch(e){}}
@@ -324,7 +324,7 @@ function loadLocal(){try{const r=localStorage.getItem(LS_KEY);if(r){const d=JSON
 
 function initLocalMode(){
   useFirebase=false;
-  if(!loadLocal()){S.tasks=[...DEFAULT.tasks];S.budget=[...DEFAULT.budget];S.stocks=[...DEFAULT.stocks];S.benevoles=[...DEFAULT.benevoles];}
+  if(!loadLocal()){S.tasks=[...DEFAULT.tasks];S.budget=[...DEFAULT.budget];S.stocks=[...DEFAULT.stocks];S.benevoles=[...DEFAULT.benevoles];S.notes=[...DEFAULT.notes];}
   setSyncStatus('local');
   document.getElementById('local-banner').style.display='block';
   showApp();renderAll();
@@ -357,6 +357,8 @@ function initFirebase(){
     refs.budget=db.ref('kermesse2026/budget');
     refs.stocks=db.ref('kermesse2026/stocks');
     refs.benevoles=db.ref('kermesse2026/benevoles');
+    refs.notes=db.ref('kermesse2026/notes');
+
 
     db.ref('.info/connected').on('value',snap=>{
       if(snap.val()){
@@ -467,10 +469,11 @@ function renderTimeline(){
 
 function renderNote(){
   document.getElementById('note').innerHTML=NOTE.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
+  document.getElementById('note').innerHTML=NOTE.map(noteHTML).join(''):'<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
 }
 function addNote(){
   const v=document.getElementById('note').value.trim();if(!v)return;
-  const id='note'+Date.now(),task={id,name:note,done:false};
+  const id='note'+Date.now(),note={id,name:note,done:false};
   if(useFirebase){fbSet('notes',id,note);}else{S.notes.push(note);saveLocal();renderNote();}
   document.getElementById('note').value='';
 }
