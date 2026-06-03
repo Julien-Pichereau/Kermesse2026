@@ -468,8 +468,7 @@ function renderTimeline(){
 }
 
 function renderNote(){
-  document.getElementById('note').innerHTML=NOTE.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
-  document.getElementById('note').innerHTML=NOTE.map(noteHTML).join(''):'<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
+  document.getElementById('note').innerHTML=NOTE.map(noteHTML).join(''):'<div class="note-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
 }
 function addNote(){
   const v=document.getElementById('note').value.trim();if(!v)return;
