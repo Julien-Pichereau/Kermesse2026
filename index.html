@@ -218,6 +218,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
       <div class="sh" style="margin-top:4px">🥤 Boissons</div><div class="stock-grid" id="sg-boissons"></div>
       <div class="sh">🍕 Nourriture</div><div class="stock-grid" id="sg-nourriture"></div>
       <div class="sh">📦 Consommables</div><div class="stock-grid" id="sg-conso"></div>
+      <div class="sh"> Bonbons</div><div class="stock-grid" id="sg-bonbons"></div>
     </div>
 
     <!-- PARENTS / BÉNÉVOLES -->
@@ -533,15 +534,15 @@ function delBudget(id){
 
 // ─── STOCKS ─────────────────────────────────────────────────────────────────
 function renderStocks(){
-  ['boissons','nourriture','conso'].forEach(cat=>{
+  ['boissons','nourriture','conso','bonbons',].forEach(cat=>{
     const el=document.getElementById('sg-'+cat); if(!el)return;
     el.innerHTML=S.stocks.filter(s=>s.cat===cat).map(s=>`
       <div class="sc">
         <div class="sc-name">${s.name}</div>
         <div class="sc-qty">
-          <button class="qb" onclick="chgStock('${s.id}',-10)">−</button>
+          <button class="qb" onclick="chgStock('${s.id}',-1)">−</button>
           <div class="qnum">${s.qty}</div>
-          <button class="qb" onclick="chgStock('${s.id}',10)">+</button>
+          <button class="qb" onclick="chgStock('${s.id}',1)">+</button>
         </div>
         <div class="qunit">${s.unit}</div>
         ${s.qty<s.min?'<div class="slow">⚠️ Stock bas</div>':''}
@@ -549,10 +550,10 @@ function renderStocks(){
   });
 }
 function chgStock(id,d){
-  const s=S.stocks.find(x=>x.id===id); if(!s)return;
-  const nq=Math.max(0,+s.qty+d);
-  if(useFirebase){fbUpdate('stocks',id,{qty:nq});}
-  else{s.qty=nq; saveLocal(); renderStocks();}
+    const s=S.stocks.find(x=>x.id===id); if(!s)return;
+    const nq=Math.max(0,+s.qty+d);
+    if(useFirebase){fbUpdate('stocks',id,{qty:nq});}
+    else{s.qty=nq; saveLocal(); renderStocks();}
 }
 
 // ─── BÉNÉVOLES ───────────────────────────────────────────────────────────────
