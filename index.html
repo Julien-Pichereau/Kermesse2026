@@ -176,7 +176,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
       <div class="form">
         <input type="text" id="nt" placeholder="Description de la tâche…">
         <div class="row">
-          <select id="nt-cat"><option>Scène</option><option>Boissons</option><option>Nourriture</option><option>Matériel</option><option>Bénévoles</option><option>Comm</option><option>Logistique</option></select>
+          <select id="nt-cat"><option>Scène</option><option>Boissons</option><option>Nourriture</option><option>Matériel</option><option>Parents</option><option>Communication</option><option>Logistique</option></select>
           <select id="nt-pri"><option value="urgent">Urgente</option><option value="normal" selected>Normale</option></select>
         </div>
         <button class="btn btn-sun" onclick="addTask()">+ Ajouter la tâche</button>
@@ -207,9 +207,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
       <div class="sh">📦 Consommables</div><div class="stock-grid" id="sg-conso"></div>
     </div>
 
-    <div id="p-benevoles" class="panel">
+    <div id="p-parents" class="panel">
       <div id="posts-list"></div>
-      <div class="sh">Affecter un bénévole</div>
+      <div class="sh">Affecter un parent</div>
       <div class="form">
         <input type="text" id="bname" placeholder="Prénom Nom">
         <select id="bpost"><option>Stand boissons</option><option>Stand nourriture</option><option>Caisse & billetterie</option><option>Scène & technique</option><option>Accueil entrée</option><option>Jeux & animations</option><option>Logistique & rangement</option></select>
@@ -218,11 +218,11 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
     </div>
 
     <div id="p-planning" class="panel">
-      <div class="sh" style="margin-top:4px">🗓️ Déroulé du 16 juin 2026</div>
+      <div class="sh" style="margin-top:4px">🗓️ Déroulé du 19 juin 2026</div>
       <div class="card" style="padding:14px"><div class="tl" id="tl"></div></div>
       <div style="background:var(--sky-l);border-radius:16px;padding:14px;margin-bottom:16px">
         <div style="font-size:13px;font-weight:800;color:var(--sky-d);margin-bottom:4px">ℹ️ Spectacle enseignants</div>
-        <div style="font-size:13px;font-weight:600;color:var(--sky-d);line-height:1.5">Le spectacle de 18h à 20h est géré par l'équipe enseignante. L'APE gère la scène avant et après.</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sky-d);line-height:1.5">Le spectacle de 18h à 20h est géré par l'équipe enseignante. L'APEL gère la scène avant et après.</div>
       </div>
     </div>
   </div>
@@ -231,8 +231,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
     <button class="nb active" onclick="goTab('taches',this)"><span class="nb-ico">✅</span><span class="nb-lab">Tâches</span></button>
     <button class="nb" onclick="goTab('budget',this)"><span class="nb-ico">💰</span><span class="nb-lab">Budget</span></button>
     <button class="nb" onclick="goTab('stocks',this)"><span class="nb-ico">🥤</span><span class="nb-lab">Stocks</span></button>
-    <button class="nb" onclick="goTab('benevoles',this)"><span class="nb-ico">👥</span><span class="nb-lab">Bénévoles</span></button>
+    <button class="nb" onclick="goTab('parents',this)"><span class="nb-ico">👥</span><span class="nb-lab">Parents</span></button>
     <button class="nb" onclick="goTab('planning',this)"><span class="nb-ico">🕐</span><span class="nb-lab">Planning</span></button>
+    <button class="nb" onclick="goTab('notes',this)"><span class="nb-ico"></span><span class="nb-lab">Notes</span></button
   </nav>
 </div>
 
