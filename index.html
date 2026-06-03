@@ -632,10 +632,10 @@ function addNote(){
   document.getElementById('note-content').value='';
 }
 
-function delNote(id){
-  if(useFirebase){fbRemove('notes',id);}
-  else{S.notes=S.notes.filter(n=>n.id!==id); saveLocal(); renderNotes();}
-}
+//function delNote(id){
+//  if(useFirebase){fbRemove('notes',id);}
+//  else{S.notes=S.notes.filter(n=>n.id!==id); saveLocal(); renderNotes();}
+//}
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
