@@ -84,8 +84,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
 .brow-del{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:0 4px;line-height:1}
 .brow-val{font-size:14px;font-weight:800}.brow-val.dep{color:var(--rose-d)}.brow-val.rec{color:var(--mint-d)}
 .form{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:12px;margin-bottom:10px}
-.form input,.form select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:14px;font-weight:600;background:var(--bg);color:var(--text);margin-bottom:8px;outline:none;-webkit-appearance:none}
-.form input:focus,.form select:focus{border-color:var(--sun)}
+.form input,.form select,.form textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:14px;font-weight:600;background:var(--bg);color:var(--text);margin-bottom:8px;outline:none;-webkit-appearance:none}
+.form textarea{resize:vertical;min-height:80px;line-height:1.5}
+.form input:focus,.form select:focus,.form textarea:focus{border-color:var(--sun)}
 .form .row{display:flex;gap:8px}
 .form .row input,.form .row select{margin-bottom:0;flex:1}
 .btn{border:none;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-top:8px;transition:transform .1s}
@@ -119,6 +120,14 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
 .tl-lab{font-size:14px;font-weight:800;line-height:1.3}
 .tl-desc{font-size:12px;font-weight:600;color:var(--muted);margin-top:2px;line-height:1.4}
 .tl-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;margin-top:4px}
+/* Notes */
+.note-item{padding:12px;border-bottom:1px solid var(--border)}
+.note-item:last-child{border-bottom:none}
+.note-title{font-size:14px;font-weight:800;margin-bottom:4px}
+.note-date{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.note-content{font-size:13px;font-weight:500;color:var(--text);line-height:1.5;white-space:pre-wrap}
+.note-del{float:right;background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;line-height:1;padding:0 0 0 8px}
+/* Splash */
 #splash{position:fixed;inset:0;background:var(--sun);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;transition:opacity .5s}
 #splash.hidden{opacity:0;pointer-events:none}
 .splash-ico{font-size:56px}
@@ -162,6 +171,8 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
   </div>
 
   <div class="content">
+
+    <!-- TÂCHES -->
     <div id="p-taches" class="panel active">
       <div class="prog-wrap">
         <div class="prog-meta">
@@ -174,15 +185,16 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
       <div class="sh">📋 À planifier</div><div class="card" id="tn"></div>
       <div class="sh">Ajouter une tâche</div>
       <div class="form">
-        <input type="text" id="nt" placeholder="Description de la tâche…">
+        <input type="text" id="task-input" placeholder="Description de la tâche…">
         <div class="row">
-          <select id="nt-cat"><option>Scène</option><option>Boissons</option><option>Nourriture</option><option>Matériel</option><option>Parents</option><option>Communication</option><option>Logistique</option></select>
-          <select id="nt-pri"><option value="urgent">Urgente</option><option value="normal" selected>Normale</option></select>
+          <select id="task-cat"><option>Scène</option><option>Boissons</option><option>Nourriture</option><option>Matériel</option><option>Parents</option><option>Communication</option><option>Logistique</option></select>
+          <select id="task-pri"><option value="urgent">Urgente</option><option value="normal" selected>Normale</option></select>
         </div>
         <button class="btn btn-sun" onclick="addTask()">+ Ajouter la tâche</button>
       </div>
     </div>
 
+    <!-- BUDGET -->
     <div id="p-budget" class="panel">
       <div class="bud-grid">
         <div class="bc rec"><div class="bc-val" id="bv-rec">5 000€</div><div class="bc-lab">📈 Recettes</div></div>
@@ -192,31 +204,39 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
       <div class="card" id="blist"></div>
       <div class="sh">Ajouter un poste budgétaire</div>
       <div class="form">
-        <input type="text" id="bl" placeholder="Ex: Sono DJ, Pizzas, Billetterie…">
+        <input type="text" id="bud-label" placeholder="Ex: Sono DJ, Pizzas, Billetterie…">
         <div class="row">
-          <input type="number" id="ba" placeholder="Montant €" min="0">
-          <select id="bt"><option value="dep">Dépense</option><option value="rec">Recette</option></select>
+          <input type="number" id="bud-amount" placeholder="Montant €" min="0">
+          <select id="bud-type"><option value="dep">Dépense</option><option value="rec">Recette</option></select>
         </div>
         <button class="btn btn-sun" onclick="addBudget()">+ Ajouter</button>
       </div>
     </div>
 
+    <!-- STOCKS -->
     <div id="p-stocks" class="panel">
       <div class="sh" style="margin-top:4px">🥤 Boissons</div><div class="stock-grid" id="sg-boissons"></div>
       <div class="sh">🍕 Nourriture</div><div class="stock-grid" id="sg-nourriture"></div>
       <div class="sh">📦 Consommables</div><div class="stock-grid" id="sg-conso"></div>
     </div>
 
+    <!-- PARENTS / BÉNÉVOLES -->
     <div id="p-parents" class="panel">
       <div id="posts-list"></div>
       <div class="sh">Affecter un parent</div>
       <div class="form">
         <input type="text" id="bname" placeholder="Prénom Nom">
-        <select id="bpost"><option>Stand boissons</option><option>Stand nourriture</option><option>Caisse & billetterie</option><option>Scène & technique</option><option>Accueil entrée</option><option>Jeux & animations</option><option>Logistique & rangement</option></select>
+        <select id="bpost">
+          <option>Stand boissons</option><option>Stand nourriture</option>
+          <option>Caisse & billetterie</option><option>Scène & technique</option>
+          <option>Accueil entrée</option><option>Jeux & animations</option>
+          <option>Logistique & rangement</option>
+        </select>
         <button class="btn btn-sun" onclick="addBenev()">+ Affecter</button>
       </div>
     </div>
 
+    <!-- PLANNING -->
     <div id="p-planning" class="panel">
       <div class="sh" style="margin-top:4px">🗓️ Déroulé du 19 juin 2026</div>
       <div class="card" style="padding:14px"><div class="tl" id="tl"></div></div>
@@ -225,20 +245,19 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
         <div style="font-size:13px;font-weight:600;color:var(--sky-d);line-height:1.5">Le spectacle de 18h à 20h est géré par l'équipe enseignante. L'APEL gère la scène avant et après.</div>
       </div>
     </div>
-  
 
-  
-    <div id="p-notes" class="panel active">
-      <div class="sh">🧾 Notes et CR</div><div class="card" id="tn"></div>
+    <!-- NOTES — CORRIGÉ : IDs uniques, pas de class active en double -->
+    <div id="p-notes" class="panel">
+      <div class="sh">🧾 Notes et comptes-rendus</div>
+      <div class="card" id="notes-list"></div>
       <div class="sh">Ajouter une note</div>
       <div class="form">
-        <input type="text" id="nt" placeholder="Taper le texte…">
-        <div class="row">
-          <textarea name="" id="nt"></textarea>
-        </div>
+        <input type="text" id="note-title" placeholder="Titre (ex: CR réunion 03/06)…">
+        <textarea id="note-content" placeholder="Contenu de la note…"></textarea>
         <button class="btn btn-sun" onclick="addNote()">+ Ajouter la note</button>
       </div>
     </div>
+
   </div>
 
   <nav class="nav">
@@ -252,8 +271,8 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,'Segoe UI',
 </div>
 
 <script>
-const DEFAULT={
-  tasks:[
+const DEFAULT = {
+  tasks: [
     {id:'t1',name:'Réserver le DJ / sono',done:false,cat:'Scène',prio:'urgent'},
     {id:'t2',name:'Commander boissons & consommables',done:false,cat:'Boissons',prio:'urgent'},
     {id:'t3',name:'Prévoir nourriture (pizzas, merguez…)',done:false,cat:'Nourriture',prio:'urgent'},
@@ -267,11 +286,11 @@ const DEFAULT={
     {id:'t11',name:'Sécurité & périmètre',done:false,cat:'Logistique',prio:'normal'},
     {id:'t12',name:'Sacs poubelles & recyclage',done:false,cat:'Logistique',prio:'normal'},
   ],
-  budget:[
+  budget: [
     {id:'b1',label:'Budget dépenses prévu',amount:2500,type:'dep'},
     {id:'b2',label:'Recettes estimées (billetterie, stands)',amount:5000,type:'rec'},
   ],
-  stocks:[
+  stocks: [
     {id:'s1',name:'Eau 50cl',qty:300,unit:'bouteilles',min:200,cat:'boissons'},
     {id:'s2',name:'Sodas 33cl',qty:200,unit:'canettes',min:150,cat:'boissons'},
     {id:'s3',name:'Jus de fruits',qty:80,unit:'briques',min:60,cat:'boissons'},
@@ -285,7 +304,7 @@ const DEFAULT={
     {id:'s11',name:'Assiettes carton',qty:400,unit:'pièces',min:300,cat:'conso'},
     {id:'s12',name:'Bonbons enfants',qty:330,unit:'sachets',min:300,cat:'conso'},
   ],
-  benevoles:[
+  benevoles: [
     {id:'bv1',name:'Marie L.',post:'Stand boissons'},
     {id:'bv2',name:'Jean-P. D.',post:'Stand boissons'},
     {id:'bv3',name:'Sophie M.',post:'Stand nourriture'},
@@ -296,12 +315,13 @@ const DEFAULT={
     {id:'bv8',name:'Franck V.',post:'Accueil entrée'},
     {id:'bv9',name:'Amira K.',post:'Jeux & animations'},
   ],
-  notes:[
-    {id:'note1',name:'CR 29 juin 2026'},
-    {id:'note2',name:'Suivi du 03/06/2026'},
+  notes: [
+    {id:'note1',title:'CR réunion du 29 mai 2026',content:'Premier point d\'organisation. Budget validé à 2500€ de dépenses.',date:'29/05/2026'},
+    {id:'note2',title:'Suivi du 03/06/2026',content:'Bénévoles confirmés : 21 parents. DJ à confirmer.',date:'03/06/2026'},
   ],
 };
-const TL=[
+
+const TL = [
   {time:'16h30',label:'Installation finale',desc:'Stands, barnums, sono',cat:'Logistique',key:false},
   {time:'16h40',label:'Fin école — Ouverture',desc:'Accueil familles, billetterie ouverte',cat:'APE',key:true},
   {time:'17h00',label:'Stands ouverts',desc:'Boissons & nourriture disponibles',cat:'APE',key:false},
@@ -311,35 +331,55 @@ const TL=[
   {time:'20h15',label:'🎵 Animation DJ',desc:'Musique & ambiance soirée',cat:'APE',key:false},
   {time:'22h00',label:'Fermeture & rangement',desc:'Démontage, caisse, nettoyage',cat:'APE',key:true},
 ];
-const CAT_CLS={Scène:'t-s',Boissons:'t-s',Nourriture:'t-g',Bénévoles:'t-g',Matériel:'t-u',Comm:'t-p',Logistique:'t-y',Budget:'t-y'};
-const CAT_BADGE={Logistique:'background:var(--pur-l);color:var(--pur-d)',APE:'background:var(--sun-l);color:var(--sun-d)',Enseignants:'background:var(--sky-l);color:var(--sky-d)'};
-const POSTS=['Stand boissons','Stand nourriture','Caisse & billetterie','Scène & technique','Accueil entrée','Jeux & animations','Logistique & rangement'];
-const LS_KEY='kermesse2026_local';
 
-let S={tasks:[],budget:[],stocks:[],benevoles:[], notes:[],};
-let db=null,refs={},useFirebase=false;
+const CAT_CLS = {Scène:'t-s',Boissons:'t-s',Nourriture:'t-g',Bénévoles:'t-g',Matériel:'t-u',Comm:'t-p',Logistique:'t-y',Budget:'t-y'};
+const CAT_BADGE = {Logistique:'background:var(--pur-l);color:var(--pur-d)',APE:'background:var(--sun-l);color:var(--sun-d)',Enseignants:'background:var(--sky-l);color:var(--sky-d)'};
+const POSTS = ['Stand boissons','Stand nourriture','Caisse & billetterie','Scène & technique','Accueil entrée','Jeux & animations','Logistique & rangement'];
+const LS_KEY = 'kermesse2026_local';
+
+let S = {tasks:[],budget:[],stocks:[],benevoles:[],notes:[]};
+let db=null, refs={}, useFirebase=false;
 
 function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify(S));}catch(e){}}
-function loadLocal(){try{const r=localStorage.getItem(LS_KEY);if(r){const d=JSON.parse(r);S={...S,...d};return true;}}catch(e){}return false;}
+function loadLocal(){
+  try{
+    const r=localStorage.getItem(LS_KEY);
+    if(r){const d=JSON.parse(r);S={...S,...d};return true;}
+  }catch(e){}
+  return false;
+}
 
 function initLocalMode(){
   useFirebase=false;
-  if(!loadLocal()){S.tasks=[...DEFAULT.tasks];S.budget=[...DEFAULT.budget];S.stocks=[...DEFAULT.stocks];S.benevoles=[...DEFAULT.benevoles];S.notes=[...DEFAULT.notes];}
+  if(!loadLocal()){
+    S.tasks=[...DEFAULT.tasks];
+    S.budget=[...DEFAULT.budget];
+    S.stocks=[...DEFAULT.stocks];
+    S.benevoles=[...DEFAULT.benevoles];
+    S.notes=[...DEFAULT.notes];
+  }
   setSyncStatus('local');
   document.getElementById('local-banner').style.display='block';
-  showApp();renderAll();
+  showApp();
+  renderAll();
 }
 
 function setSyncStatus(s){
-  const dot=document.getElementById('sdot'),lbl=document.getElementById('slabel');
+  const dot=document.getElementById('sdot'), lbl=document.getElementById('slabel');
   dot.className='dot '+s;
   lbl.textContent={online:'Synchronisé ✓',offline:'Hors ligne',local:'Mode local',connecting:'Connexion…'}[s]||s;
 }
-function showApp(){document.getElementById('splash').classList.add('hidden');document.getElementById('app').style.visibility='visible';}
+
+function showApp(){
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('app').style.visibility='visible';
+}
+
 function goTab(id,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
-  document.getElementById('p-'+id).classList.add('active');btn.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
+  btn.classList.add('active');
 }
 
 function initFirebase(){
@@ -358,7 +398,6 @@ function initFirebase(){
     refs.stocks=db.ref('kermesse2026/stocks');
     refs.benevoles=db.ref('kermesse2026/benevoles');
     refs.notes=db.ref('kermesse2026/notes');
-
 
     db.ref('.info/connected').on('value',snap=>{
       if(snap.val()){
@@ -380,104 +419,209 @@ function initFirebase(){
 
 function setupListeners(){
   function hydrate(ref,key,defaults){
-    ref.once('value',snap=>{if(!snap.val())ref.set(arrToObj(defaults));});
+    ref.once('value',snap=>{if(!snap.val()) ref.set(arrToObj(defaults));});
     ref.on('value',snap=>{
-      S[key]=snap.val()?Object.values(snap.val()).filter(x=>x&&x.id):[...defaults];
-      renderAll();showApp();
+      S[key]=snap.val() ? Object.values(snap.val()).filter(x=>x&&x.id) : [...defaults];
+      renderAll();
+      showApp();
     });
   }
   hydrate(refs.tasks,'tasks',DEFAULT.tasks);
   hydrate(refs.budget,'budget',DEFAULT.budget);
   hydrate(refs.stocks,'stocks',DEFAULT.stocks);
   hydrate(refs.benevoles,'benevoles',DEFAULT.benevoles);
-  hydrate(refs.notes,'notes', DEFAULT.notes);
+  hydrate(refs.notes,'notes',DEFAULT.notes);
 }
 
 function arrToObj(arr){const o={};arr.forEach(x=>{if(x&&x.id)o[x.id]=x;});return o;}
-function fbSet(k,id,d){useFirebase&&refs[k]?refs[k].child(id).set(d).catch(e=>console.error(e)):saveLocal();}
-function fbUpdate(k,id,d){useFirebase&&refs[k]?refs[k].child(id).update(d).catch(e=>console.error(e)):saveLocal();}
-function fbRemove(k,id){useFirebase&&refs[k]?refs[k].child(id).remove().catch(e=>console.error(e)):saveLocal();}
+function fbSet(k,id,d){useFirebase&&refs[k] ? refs[k].child(id).set(d).catch(e=>console.error(e)) : saveLocal();}
+function fbUpdate(k,id,d){useFirebase&&refs[k] ? refs[k].child(id).update(d).catch(e=>console.error(e)) : saveLocal();}
+function fbRemove(k,id){useFirebase&&refs[k] ? refs[k].child(id).remove().catch(e=>console.error(e)) : saveLocal();}
 
-function renderAll(){renderTasks();renderBudget();renderStocks();renderBenevoles();renderTimeline();renderNote;}
+// ─── RENDER ALL ─────────────────────────────────────────────────────────────
+// CORRECTIF : renderNote() avec parenthèses
+function renderAll(){
+  renderTasks();
+  renderBudget();
+  renderStocks();
+  renderBenevoles();
+  renderTimeline();
+  renderNotes(); // ← CORRECTIF : était "renderNote;" sans ()
+}
 
+// ─── TÂCHES ─────────────────────────────────────────────────────────────────
 function renderTasks(){
-  const done=S.tasks.filter(t=>t.done).length,tot=S.tasks.length,pct=tot?Math.round(done/tot*100):0;
+  const done=S.tasks.filter(t=>t.done).length, tot=S.tasks.length, pct=tot?Math.round(done/tot*100):0;
   document.getElementById('t-count').textContent=done+'/'+tot;
   document.getElementById('t-bar').style.width=pct+'%';
   document.getElementById('kpi-t').textContent=pct+'%';
-  const urg=S.tasks.filter(t=>t.prio==='urgent'),nor=S.tasks.filter(t=>t.prio!=='urgent');
-  document.getElementById('tu').innerHTML=urg.length?urg.map(tHTML).join(''):'<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
-  document.getElementById('tn').innerHTML=nor.length?nor.map(tHTML).join(''):'<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">Aucune tâche</span></div>';
+  const urg=S.tasks.filter(t=>t.prio==='urgent');
+  const nor=S.tasks.filter(t=>t.prio!=='urgent');
+  document.getElementById('tu').innerHTML=urg.length ? urg.map(tHTML).join('') : '<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
+  document.getElementById('tn').innerHTML=nor.length ? nor.map(tHTML).join('') : '<div class="task-item"><span style="color:var(--muted);font-size:13px;font-weight:600">Aucune tâche</span></div>';
 }
-function tHTML(t){return `<div class="task-item"><div class="tcb ${t.done?'done':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div><span class="tname ${t.done?'done':''}">${t.name}</span><span class="tag ${CAT_CLS[t.cat]||'t-s'}" style="flex-shrink:0">${t.cat}</span></div>`;}
+function tHTML(t){
+  return `<div class="task-item">
+    <div class="tcb ${t.done?'done':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+    <span class="tname ${t.done?'done':''}">${t.name}</span>
+    <span class="tag ${CAT_CLS[t.cat]||'t-s'}" style="flex-shrink:0">${t.cat}</span>
+  </div>`;
+}
 function toggleTask(id){
-  const t=S.tasks.find(x=>x.id===id);if(!t)return;
-  if(useFirebase){fbUpdate('tasks',id,{done:!t.done});}else{t.done=!t.done;saveLocal();renderTasks();}
+  const t=S.tasks.find(x=>x.id===id); if(!t)return;
+  if(useFirebase){fbUpdate('tasks',id,{done:!t.done});}
+  else{t.done=!t.done; saveLocal(); renderTasks();}
 }
 function addTask(){
-  const v=document.getElementById('nt').value.trim();if(!v)return;
-  const id='t'+Date.now(),task={id,name:v,done:false,cat:document.getElementById('nt-cat').value,prio:document.getElementById('nt-pri').value};
-  if(useFirebase){fbSet('tasks',id,task);}else{S.tasks.push(task);saveLocal();renderTasks();}
-  document.getElementById('nt').value='';
+  // CORRECTIF : IDs renommés task-input, task-cat, task-pri
+  const v=document.getElementById('task-input').value.trim(); if(!v)return;
+  const id='t'+Date.now();
+  const task={id,name:v,done:false,cat:document.getElementById('task-cat').value,prio:document.getElementById('task-pri').value};
+  if(useFirebase){fbSet('tasks',id,task);}
+  else{S.tasks.push(task); saveLocal(); renderTasks();}
+  document.getElementById('task-input').value='';
 }
 
+// ─── BUDGET ─────────────────────────────────────────────────────────────────
 function renderBudget(){
-  let dep=0,rec=0;S.budget.forEach(b=>b.type==='dep'?dep+=+b.amount:rec+=+b.amount);
+  let dep=0,rec=0;
+  S.budget.forEach(b=>b.type==='dep' ? dep+=+b.amount : rec+=+b.amount);
   const sol=rec-dep;
   document.getElementById('bv-rec').textContent=rec.toLocaleString('fr-FR')+'€';
   document.getElementById('bv-dep').textContent=dep.toLocaleString('fr-FR')+'€';
   document.getElementById('bv-sol').textContent=(sol>=0?'+':'')+sol.toLocaleString('fr-FR')+'€';
-  document.getElementById('kpi-s').textContent=(sol>=0?'+':'')+Math.abs(Math.round(sol/100)*100/1000)+'k€';
-  document.getElementById('blist').innerHTML=S.budget.map(b=>`<div class="brow"><span class="brow-lab">${b.label}</span><span class="brow-val ${b.type}">${b.type==='dep'?'−':'+'}${(+b.amount).toLocaleString('fr-FR')} €</span><button class="brow-del" onclick="delBudget('${b.id}')">×</button></div>`).join('');
+  document.getElementById('kpi-s').textContent=(sol>=0?'+':'')+Math.round(sol/1000*10)/10+'k€';
+  document.getElementById('blist').innerHTML=S.budget.map(b=>`
+    <div class="brow">
+      <span class="brow-lab">${b.label}</span>
+      <span class="brow-val ${b.type}">${b.type==='dep'?'−':'+'}${(+b.amount).toLocaleString('fr-FR')} €</span>
+      <button class="brow-del" onclick="delBudget('${b.id}')">×</button>
+    </div>`).join('');
 }
 function addBudget(){
-  const l=document.getElementById('bl').value.trim(),a=parseFloat(document.getElementById('ba').value);if(!l||!a)return;
-  const id='b'+Date.now(),item={id,label:l,amount:a,type:document.getElementById('bt').value};
-  if(useFirebase){fbSet('budget',id,item);}else{S.budget.push(item);saveLocal();renderBudget();}
-  document.getElementById('bl').value='';document.getElementById('ba').value='';
+  // CORRECTIF : IDs renommés bud-label, bud-amount, bud-type
+  const l=document.getElementById('bud-label').value.trim();
+  const a=parseFloat(document.getElementById('bud-amount').value);
+  if(!l||!a)return;
+  const id='b'+Date.now();
+  const item={id,label:l,amount:a,type:document.getElementById('bud-type').value};
+  if(useFirebase){fbSet('budget',id,item);}
+  else{S.budget.push(item); saveLocal(); renderBudget();}
+  document.getElementById('bud-label').value='';
+  document.getElementById('bud-amount').value='';
 }
-function delBudget(id){if(useFirebase){fbRemove('budget',id);}else{S.budget=S.budget.filter(b=>b.id!==id);saveLocal();renderBudget();}}
+function delBudget(id){
+  if(useFirebase){fbRemove('budget',id);}
+  else{S.budget=S.budget.filter(b=>b.id!==id); saveLocal(); renderBudget();}
+}
 
+// ─── STOCKS ─────────────────────────────────────────────────────────────────
 function renderStocks(){
   ['boissons','nourriture','conso'].forEach(cat=>{
-    const el=document.getElementById('sg-'+cat);if(!el)return;
-    el.innerHTML=S.stocks.filter(s=>s.cat===cat).map(s=>`<div class="sc"><div class="sc-name">${s.name}</div><div class="sc-qty"><button class="qb" onclick="chgStock('${s.id}',-10)">−</button><div class="qnum">${s.qty}</div><button class="qb" onclick="chgStock('${s.id}',10)">+</button></div><div class="qunit">${s.unit}</div>${s.qty<s.min?'<div class="slow">⚠️ Stock bas</div>':''}</div>`).join('');
+    const el=document.getElementById('sg-'+cat); if(!el)return;
+    el.innerHTML=S.stocks.filter(s=>s.cat===cat).map(s=>`
+      <div class="sc">
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-qty">
+          <button class="qb" onclick="chgStock('${s.id}',-10)">−</button>
+          <div class="qnum">${s.qty}</div>
+          <button class="qb" onclick="chgStock('${s.id}',10)">+</button>
+        </div>
+        <div class="qunit">${s.unit}</div>
+        ${s.qty<s.min?'<div class="slow">⚠️ Stock bas</div>':''}
+      </div>`).join('');
   });
 }
 function chgStock(id,d){
-  const s=S.stocks.find(x=>x.id===id);if(!s)return;const nq=Math.max(0,+s.qty+d);
-  if(useFirebase){fbUpdate('stocks',id,{qty:nq});}else{s.qty=nq;saveLocal();renderStocks();}
+  const s=S.stocks.find(x=>x.id===id); if(!s)return;
+  const nq=Math.max(0,+s.qty+d);
+  if(useFirebase){fbUpdate('stocks',id,{qty:nq});}
+  else{s.qty=nq; saveLocal(); renderStocks();}
 }
 
+// ─── BÉNÉVOLES ───────────────────────────────────────────────────────────────
 function renderBenevoles(){
   document.getElementById('posts-list').innerHTML=POSTS.map(p=>{
     const list=S.benevoles.filter(b=>b.post===p);
-    return `<div class="post-card"><div class="post-hd"><span class="post-name">${p}</span><span class="post-cnt">${list.length} pers.</span></div><div class="bl">${list.length?list.map(b=>`<div class="bchip"><div class="bav">${b.name.slice(0,2).toUpperCase()}</div>${b.name}<button class="bdel" onclick="delBenev('${b.id}')">×</button></div>`).join(''):'<div class="bempty">Aucun bénévole affecté</div>'}</div></div>`;
+    return `<div class="post-card">
+      <div class="post-hd"><span class="post-name">${p}</span><span class="post-cnt">${list.length} pers.</span></div>
+      <div class="bl">${list.length
+        ? list.map(b=>`<div class="bchip"><div class="bav">${b.name.slice(0,2).toUpperCase()}</div>${b.name}<button class="bdel" onclick="delBenev('${b.id}')">×</button></div>`).join('')
+        : '<div class="bempty">Aucun bénévole affecté</div>'
+      }</div>
+    </div>`;
   }).join('');
 }
 function addBenev(){
-  const n=document.getElementById('bname').value.trim();if(!n)return;
-  const id='bv'+Date.now(),item={id,name:n,post:document.getElementById('bpost').value};
-  if(useFirebase){fbSet('benevoles',id,item);}else{S.benevoles.push(item);saveLocal();renderBenevoles();}
+  const n=document.getElementById('bname').value.trim(); if(!n)return;
+  const id='bv'+Date.now();
+  const item={id,name:n,post:document.getElementById('bpost').value};
+  if(useFirebase){fbSet('benevoles',id,item);}
+  else{S.benevoles.push(item); saveLocal(); renderBenevoles();}
   document.getElementById('bname').value='';
 }
-function delBenev(id){if(useFirebase){fbRemove('benevoles',id);}else{S.benevoles=S.benevoles.filter(b=>b.id!==id);saveLocal();renderBenevoles();}}
+function delBenev(id){
+  if(useFirebase){fbRemove('benevoles',id);}
+  else{S.benevoles=S.benevoles.filter(b=>b.id!==id); saveLocal(); renderBenevoles();}
+}
 
+// ─── PLANNING ────────────────────────────────────────────────────────────────
 function renderTimeline(){
-  document.getElementById('tl').innerHTML=TL.map((t,i)=>`<div class="tlr"><div class="tl-t">${t.time}</div><div class="tl-m"><div class="tl-dot ${t.key?'key':''}"></div>${i<TL.length-1?'<div class="tl-line"></div>':''}</div><div class="tl-r"><div class="tl-lab">${t.label}</div><div class="tl-desc">${t.desc}</div><div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div></div></div>`).join('');
+  document.getElementById('tl').innerHTML=TL.map((t,i)=>`
+    <div class="tlr">
+      <div class="tl-t">${t.time}</div>
+      <div class="tl-m">
+        <div class="tl-dot ${t.key?'key':''}"></div>
+        ${i<TL.length-1?'<div class="tl-line"></div>':''}
+      </div>
+      <div class="tl-r">
+        <div class="tl-lab">${t.label}</div>
+        <div class="tl-desc">${t.desc}</div>
+        <div class="tl-badge" style="${CAT_BADGE[t.cat]||CAT_BADGE.APE}">${t.cat}</div>
+      </div>
+    </div>`).join('');
 }
 
-function renderNote(){
-  document.getElementById('note').innerHTML=NOTE.map(noteHTML).join(''):'<div class="note-item"><span style="color:var(--muted);font-size:13px;font-weight:600">✅ Aucune tâche urgente</span></div>';
+// ─── NOTES ──────────────────────────────────────────────────────────────────
+// CORRECTIF COMPLET : fonction renommée renderNotes(), IDs corrects, logique réparée
+
+function noteHTML(n){
+  return `<div class="note-item">
+    <button class="note-del" onclick="delNote('${n.id}')">×</button>
+    <div class="note-title">${n.title||'Sans titre'}</div>
+    <div class="note-date">${n.date||''}</div>
+    <div class="note-content">${n.content||''}</div>
+  </div>`;
 }
+
+function renderNotes(){
+  const el=document.getElementById('notes-list'); if(!el)return;
+  el.innerHTML=S.notes.length
+    ? S.notes.map(noteHTML).join('')
+    : '<div class="note-item"><span style="color:var(--muted);font-size:13px;font-weight:600">Aucune note pour l\'instant</span></div>';
+}
+
 function addNote(){
-  const v=document.getElementById('note').value.trim();if(!v)return;
-  const id='note'+Date.now(),note={id,name:note,done:false};
-  if(useFirebase){fbSet('notes',id,note);}else{S.notes.push(note);saveLocal();renderNote();}
-  document.getElementById('note').value='';
+  // CORRECTIF : bons IDs note-title et note-content, variable v pour le titre
+  const title=document.getElementById('note-title').value.trim();
+  const content=document.getElementById('note-content').value.trim();
+  if(!title && !content)return;
+  const id='note'+Date.now();
+  const today=new Date().toLocaleDateString('fr-FR');
+  // CORRECTIF : objet bien formé, plus de confusion nom/valeur
+  const note={id, title:title||'Note sans titre', content, date:today};
+  if(useFirebase){fbSet('notes',id,note);}
+  else{S.notes.push(note); saveLocal(); renderNotes();}
+  document.getElementById('note-title').value='';
+  document.getElementById('note-content').value='';
 }
 
-// Chargement dynamique du SDK Firebase
+function delNote(id){
+  if(useFirebase){fbRemove('notes',id);}
+  else{S.notes=S.notes.filter(n=>n.id!==id); saveLocal(); renderNotes();}
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   const s1=document.createElement('script');
   s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
