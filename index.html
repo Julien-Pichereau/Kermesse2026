@@ -533,7 +533,7 @@ function delBudget(id){
 
 // ─── STOCKS ─────────────────────────────────────────────────────────────────
 function renderStocks(){
-  ['boissons','nourriture','conso','bonbons',].forEach(cat=>{
+  ['boissons','nourriture','consommables','bonbons',].forEach(cat=>{
     const el=document.getElementById('sg-'+cat); if(!el)return;
     el.innerHTML=S.stocks.filter(s=>s.cat===cat).map(s=>`
       <div class="sc">
